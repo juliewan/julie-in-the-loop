@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>contact — julie in the loop</title>
+<title>julie-in-the-loop — contact</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <style>
@@ -85,16 +85,74 @@
     color: #73675f;
     border-bottom-color: #73675f;
   }
+
+  .sidebar {
+    position: fixed;
+    top: 70px;
+    right: 24px;
+    max-width: 220px;
+    color: #73675f;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
+    z-index: 15;
+  }
+
+  .sidebar-section + .sidebar-section {
+    margin-top: 20px;
+  }
+
+  .sidebar .sidebar-title {
+    display: inline-block;
+    font-weight: 700;
+    color: #544b45;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    text-decoration: none;
+  }
+
+  .sidebar .sidebar-title:hover {
+    text-decoration: underline;
+  }
+
+  .sidebar p {
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .sidebar {
+      position: static;
+      max-width: none;
+      margin: 90px 24px 24px;
+    }
+
+    main {
+      padding-top: 24px;
+    }
+  }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <a class="site-title" href="index.html">julie in the loop</a>
+  <a class="site-title" href="index.html">julie-in-the-loop</a>
   <div class="site-links">
     <a href="index.html">home</a>
     <a href="blog.html">blog</a>
     <a href="chat.html">ask chat</a>
+  </div>
+</div>
+
+<div class="sidebar">
+  <div class="sidebar-section">
+    <a class="sidebar-title" href="blog.html">blog</a>
+    <p>Short-and-potentially-sweet/incomplete posts as hyperfocus was outsourced to Opus and context holding has annexed my brain.</p>
+  </div>
+  <div class="sidebar-section">
+    <a class="sidebar-title" href="chat.html">ask chat</a>
+    <p>about my professional experience.</p>
   </div>
 </div>
 
