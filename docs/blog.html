@@ -3,9 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>julie-in-the-loop — blog</title>
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/marie-favicon.png">
 <style>
+  :root {
+    /* right-side sidebar footprint (right gap 24px + max-width 220px).
+       content centers in the viewport MINUS this column → biased left. */
+    --nav-width: 244px;
+  }
+
   html, body {
     margin: 0;
     padding: 0;
@@ -15,6 +20,11 @@
     color: #73675f;
   }
 
+  body {
+    box-sizing: border-box;
+    padding-right: var(--nav-width);   /* shrink the field the centered content lives in */
+  }
+
   .topbar {
     position: fixed;
     top: 0;
@@ -22,37 +32,36 @@
     width: 100%;
     box-sizing: border-box;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 16px 24px;
+    padding-right: calc(24px + var(--nav-width));  /* keep the logo over the content column */
     font-family: 'Courier New', Courier, monospace;
     color: #544b45;
     z-index: 20;
     background-color: #fff0f0;
+    pointer-events: none;       /* don't cover the sidebar links below */
   }
 
-  .topbar .site-title {
-    font-weight: 700;
-    font-size: 18px;
-    color: #544b45;
+  .topbar .logo {
+    display: inline-block;
+    line-height: 0;
     text-decoration: none;
+    pointer-events: auto;       /* but the logo itself stays clickable */
   }
 
-  .topbar .site-links {
-    display: flex;
-    gap: 20px;
-  }
-
-  .topbar .site-links a {
+  .logo-art {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 5px;
+    line-height: 1.05;
+    white-space: pre;
     color: #544b45;
-    text-decoration: none;
-    font-size: 14px;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s;
+    transition: color 0.2s;
   }
 
-  .topbar .site-links a:hover {
-    border-bottom-color: #544b45;
+  .topbar .logo:hover .logo-art {
+    color: #b98a86;
   }
 
   main {
@@ -121,9 +130,12 @@
 
   .sidebar {
     position: fixed;
-    top: 70px;
+    top: 100px;
+    bottom: 24px;
     right: 24px;
     max-width: 220px;
+    display: flex;
+    flex-direction: column;
     color: #73675f;
     font-size: 12px;
     line-height: 1.5;
@@ -154,11 +166,51 @@
     margin: 0;
   }
 
+  .sidebar-contact {
+    margin-top: 60px;
+  }
+
+  .sidebar-contact .icon-row {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .sidebar-contact .email {
+    display: block;
+    color: #544b45;
+    font-size: 12px;
+  }
+
+  .sidebar-contact .icon-row a {
+    display: inline-flex;
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+
+  .sidebar-contact .icon-row a:hover {
+    opacity: 0.6;
+  }
+
+  .sidebar-contact .icon-row img {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
   @media (max-width: 640px) {
+    :root {
+      --nav-width: 0px;    /* sidebar stacks below — no right column to avoid */
+    }
+
     .sidebar {
       position: static;
       max-width: none;
       margin: 90px 24px 24px;
+    }
+
+    .sidebar-contact {
+      margin-top: 20px;
     }
 
     main {
@@ -170,18 +222,36 @@
 <body>
 
 <div class="topbar">
-  <a class="site-title" href="index.html">julie-in-the-loop</a>
-  <div class="site-links">
-    <a href="index.html">home</a>
-    <a href="contact.html">contact</a>
-    <a href="chat.html">ask chat</a>
-  </div>
+  <a class="logo" href="index.html" aria-label="julie-in-the-loop — home"><pre class="logo-art">
+          ▄▄                                                    ▄▄
+           ██                              █▄ █▄                 ██
+  ▀▀       ██ ▀▀            ▀▀ ▄          ▄██▄██                 ██
+  ██ ██ ██ ██ ██ ▄█▀█▄      ██ ████▄       ██ ████▄ ▄█▀█▄        ██ ▄███▄ ▄███▄ ████▄
+  ██ ██ ██ ██ ██ ██▄█▀ ▀▀▀▀ ██ ██ ██ ▀▀▀▀  ██ ██ ██ ██▄█▀ ▀▀▀▀   ██ ██ ██ ██ ██ ██ ██
+ ▄██▄▀██▀█▄██▄██▄▀█▄▄▄     ▄██▄██ ▀█      ▄██▄██ ██▄▀█▄▄▄       ▄██▄▀███▀▄▀███▀▄████▀
+  ██                                                                            ██
+▀▀▀                                                                             ▀</pre></a>
 </div>
 
 <div class="sidebar">
   <div class="sidebar-section">
+    <a class="sidebar-title" href="blog.html">blog</a>
+    <p>Short-and-potentially-sweet/incomplete posts as hyperfocus was outsourced to Opus and context holding has annexed my brain.</p>
+  </div>
+  <div class="sidebar-section">
     <a class="sidebar-title" href="chat.html">ask chat</a>
     <p>about my professional experience.</p>
+  </div>
+  <div class="sidebar-contact">
+    <div class="icon-row">
+      <a href="https://linkedin.com/in/julie-wan" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <img src="assets/linkedin-icon.png" alt="LinkedIn">
+      </a>
+      <a href="https://github.com/juliewan" target="_blank" rel="noopener" aria-label="GitHub">
+        <img src="assets/github-icon.png" alt="GitHub">
+      </a>
+    </div>
+    <span class="email">julieintheloop@gmail.com</span>
   </div>
 </div>
 

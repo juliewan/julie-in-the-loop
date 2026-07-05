@@ -3,52 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <title>julie-in-the-loop</title>
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/marie-favicon.png">
 <style>
+  :root {
+    /* right-side sidebar footprint (right gap 24px + max-width 220px).
+       content centers in the viewport MINUS this column → biased left. */
+    --nav-width: 244px;
+  }
+
   html, body {
     margin: 0;
     padding: 0;
     height: 100%;
     font-family: 'Courier New', Courier, monospace;
     background-color: #fff0f0;
-  }
-
-  .topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 24px;
-    font-family: 'Courier New', Courier, monospace;
-    color: #544b45;
-    z-index: 20;
-  }
-
-  .topbar .site-title {
-    font-weight: 700;
-    font-size: 18px;
-  }
-
-  .topbar .site-links {
-    display: flex;
-    gap: 20px;
-  }
-
-  .topbar .site-links a {
-    color: #544b45;
-    text-decoration: none;
-    font-size: 14px;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s;
-  }
-
-  .topbar .site-links a:hover {
-    border-bottom-color: #544b45;
   }
 
   /* "Let's Talk Julie" scroll-entry hero — disabled, replaced by the landing page + /ask chat/ page
@@ -97,9 +65,12 @@
 
   .sidebar {
     position: fixed;
-    top: 70px;
+    top: 100px;
+    bottom: 24px;
     right: 24px;
     max-width: 220px;
+    display: flex;
+    flex-direction: column;
     color: #73675f;
     font-size: 12px;
     line-height: 1.5;
@@ -130,25 +101,108 @@
     margin: 0;
   }
 
+  .sidebar-contact {
+    margin-top: 60px;
+  }
+
+  .sidebar-contact .icon-row {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .sidebar-contact .email {
+    display: block;
+    color: #544b45;
+    font-size: 12px;
+  }
+
+  .sidebar-contact .icon-row a {
+    display: inline-flex;
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+
+  .sidebar-contact .icon-row a:hover {
+    opacity: 0.6;
+  }
+
+  .sidebar-contact .icon-row img {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
   @media (max-width: 640px) {
+    :root {
+      --nav-width: 0px;    /* sidebar stacks below — no right column to avoid */
+    }
+
     .sidebar {
       position: static;
       max-width: none;
       margin: 90px 24px 24px;
     }
+
+    .sidebar-contact {
+      margin-top: 20px;
+    }
+  }
+
+  /* ── centered wordmark, wave animation ─────────────────── */
+  .wordmark {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;    /* sit high — around the top third   */
+    justify-content: center;
+    padding: 18vh 24px 24px;
+    padding-right: calc(24px + var(--nav-width));  /* center left of the sidebar */
+    z-index: 5;                 /* below sidebar (15) + topbar (20) */
+    pointer-events: none;       /* clicks pass through to links     */
+  }
+
+  .wordmark pre {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: clamp(5px, 1.45vw, 13px);
+    line-height: 1.05;
+    color: #b98a86;
+    white-space: pre;
+  }
+
+  .wordmark .wv {
+    display: inline-block;
+    transform-origin: bottom center;   /* squash/stretch stands on the floor */
+    /* one full cycle = time for the hop to cross the width + a rest gap */
+    animation: wordmark-hop 5.2s linear infinite;
+    animation-delay: var(--d, 0s);
+    will-change: transform;
+  }
+
+  /* pixar-lamp hop: crouch (anticipation) → big launch, stretched → smack
+     the floor, squashed → a couple of decaying bounces → settle → long rest.
+     the per-column delay marches this hop left → right, stadium-wave style.
+     per-keyframe easing fakes gravity: decelerate on the way up, accelerate
+     on the way down. */
+  @keyframes wordmark-hop {
+    0%    { transform: translateY(0)       scale(1, 1);      animation-timing-function: ease-in;  }
+    1.8%  { transform: translateY(0.1em)   scale(1.16, 0.7); animation-timing-function: ease-out; } /* anticipation crouch */
+    5.3%  { transform: translateY(-1.1em)  scale(0.9, 1.16); animation-timing-function: ease-in;  } /* launch → apex, stretched */
+    9%    { transform: translateY(0)       scale(1.18, 0.72);animation-timing-function: ease-out; } /* hit the floor, squash */
+    11%   { transform: translateY(-0.34em) scale(0.97, 1.06);animation-timing-function: ease-in;  } /* bounce back up */
+    12.8% { transform: translateY(0)       scale(1.08, 0.86);animation-timing-function: ease-out; } /* land, small squash */
+    14%   { transform: translateY(-0.1em)  scale(1, 1.02);   animation-timing-function: ease-in;  } /* last little hop */
+    15%   { transform: translateY(0)       scale(1, 1); }                                           /* settle */
+    100%  { transform: translateY(0)       scale(1, 1); }                                           /* rest until the wave loops */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wordmark .wv { animation: none; }
   }
 </style>
 </head>
 <body>
-
-<div class="topbar">
-  <div class="site-title">julie-in-the-loop</div>
-  <div class="site-links">
-    <a href="blog.html">blog</a>
-    <a href="contact.html">contact</a>
-    <a href="chat.html">ask chat</a>
-  </div>
-</div>
 
 <!-- "Let's Talk Julie" scroll-entry hero — disabled, replaced by the landing page + /ask chat/ page
 <div class="hero" id="hero">
@@ -157,6 +211,8 @@
   <div class="arrow">⬇️</div>
 </div>
 -->
+
+<div class="wordmark" aria-hidden="true"><pre id="wordmark-art"></pre></div>
 
 <div class="sidebar">
   <div class="sidebar-section">
@@ -167,7 +223,55 @@
     <a class="sidebar-title" href="chat.html">ask chat</a>
     <p>about my professional experience.</p>
   </div>
+  <div class="sidebar-contact">
+    <div class="icon-row">
+      <a href="https://linkedin.com/in/julie-wan" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <img src="assets/linkedin-icon.png" alt="LinkedIn">
+      </a>
+      <a href="https://github.com/juliewan" target="_blank" rel="noopener" aria-label="GitHub">
+        <img src="assets/github-icon.png" alt="GitHub">
+      </a>
+    </div>
+    <span class="email">julieintheloop@gmail.com</span>
+  </div>
 </div>
 
+<script>
+(() => {
+  "use strict";
+  const ART = String.raw`
+          ▄▄                                                    ▄▄
+           ██                              █▄ █▄                 ██
+  ▀▀       ██ ▀▀            ▀▀ ▄          ▄██▄██                 ██
+  ██ ██ ██ ██ ██ ▄█▀█▄      ██ ████▄       ██ ████▄ ▄█▀█▄        ██ ▄███▄ ▄███▄ ████▄
+  ██ ██ ██ ██ ██ ██▄█▀ ▀▀▀▀ ██ ██ ██ ▀▀▀▀  ██ ██ ██ ██▄█▀ ▀▀▀▀   ██ ██ ██ ██ ██ ██ ██
+ ▄██▄▀██▀█▄██▄██▄▀█▄▄▄     ▄██▄██ ▀█      ▄██▄██ ██▄▀█▄▄▄       ▄██▄▀███▀▄▀███▀▄████▀
+  ██                                                                            ██
+▀▀▀                                                                             ▀    `;
+
+  const STEP = 0.045;                // seconds of delay per column → the hop's travel speed
+  const pre = document.getElementById("wordmark-art");
+  const lines = ART.replace(/^\n/, "").split("\n");
+
+  for (const line of lines) {
+    const row = document.createDocumentFragment();
+    [...line].forEach((ch, col) => {
+      if (ch === " ") {              // spaces just hold the grid, no need to animate
+        row.appendChild(document.createTextNode(" "));
+        return;
+      }
+      const span = document.createElement("span");
+      span.className = "wv";
+      span.textContent = ch;
+      // positive, growing delay → each column hops a beat later than the one
+      // to its left, so the crest sweeps left → right
+      span.style.setProperty("--d", `${(col * STEP).toFixed(2)}s`);
+      row.appendChild(span);
+    });
+    pre.appendChild(row);
+    pre.appendChild(document.createTextNode("\n"));
+  }
+})();
+</script>
 </body>
 </html>
